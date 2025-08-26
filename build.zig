@@ -4,12 +4,11 @@ pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
-    const lib = b.addStaticLibrary(.{
-        .name = "x11-headers",
-        .root_source_file = b.addWriteFiles().add("empty.c", ""),
+    const lib = b.addLibrary(.{ .name = "x11-headers", .root_module = b.createModule(.{
+        .root_source_file = b.path("empty.zig"),
         .target = target,
         .optimize = optimize,
-    });
+    }) });
 
     // contains only GLX headers!
     lib.installHeadersDirectory(b.path("GL"), "GL", .{});
